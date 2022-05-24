@@ -46,59 +46,48 @@ namespace AlgorithmComparer
         #endregion
 
         #region QuickSort
-        public void QuickSort(int[] array, int low, int high)
+        public void QuickSort(int[] a, int p, int r)
         {
-            int[] stack = new int[high - low + 1];
-
-            int top = -1;
-
-            stack[++top] = low;
-            stack[++top] = high;
-
-            while (top >= 0)
+            if (p < r)
             {
-                high = stack[top--];
-                low = stack[top--];
-
-                int p = Partition(array, low, high);
-
-                if (p - 1 > low)
-                {
-                    stack[++top] = low;
-                    stack[++top] = p - 1;
-                }
-
-                if (p + 1 < high)
-                {
-                    stack[++top] = p + 1;
-                    stack[++top] = high;
-                }
+                int q = Partition(a, p, r);
+                QuickSort(a, p, q);
+                QuickSort(a, q + 1, r);
             }
         }
 
-        private int Partition(int[] array, int low, int high)
+        private int Partition(int[] a, int p, int r)
         {
-            int temp;
-            int pivot = array[high];
 
-            int i = (low - 1);
-            for (int j = low; j <= high - 1; j++)
+            int x = a[p];
+            int i = p;
+            int j = r;
+
+            while (true)
             {
-                if (array[j] <= pivot)
+                do
                 {
                     i++;
+                } 
+                while (i < r && a[i] < x);
 
-                    temp = array[i];
-                    array[i] = array[j];
-                    array[j] = temp;
+                do
+                {
+                    j--;
+                } 
+                while (j > p && a[j] > x);
+
+                if (i < j)
+                {
+                    int tmp = a[i];
+                    a[i++] = a[j];
+                    a[j--] = tmp;
+                }
+                else
+                {
+                    return j;
                 }
             }
-
-            temp = array[i + 1];
-            array[i + 1] = array[high];
-            array[high] = temp;
-
-            return i + 1;
         }
         #endregion
 
